@@ -3,6 +3,7 @@
 /app/Config/core.php
 /app/Config/database.php
 /config/app.php
+/config/Migrations/schema-dump-migration.lock
 /logs/*
 !/logs/empty
 /tmp/cache/models/*
