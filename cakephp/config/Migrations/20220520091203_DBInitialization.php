@@ -74,6 +74,10 @@ class DBInitialization extends AbstractMigration
             'limit' => 191,
             'null' => false,
         ]);
+        $articlesTable->addColumn('body', 'text', [
+            'default' => null,
+            'null' => true,
+        ]);
         $articlesTable->addColumn('published', 'boolean', [
             'default' => false,
         ]);
