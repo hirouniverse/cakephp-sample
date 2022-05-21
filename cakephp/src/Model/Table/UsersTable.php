@@ -93,8 +93,8 @@ class UsersTable extends Table
      *
      * @return string
      */
-    public static function defaultConnectionName(): string
-    {
-        return 'migration';
-    }
+    // public static function defaultConnectionName(): string
+    // {
+    //     return 'migration';
+    // }
 }

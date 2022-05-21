@@ -5,6 +5,8 @@ class ArticlesController extends AppController
 {
   public function initialize() : void
   {
+    parent::initialize();
+    
     $this->loadComponent('Paginator');
     /**
      * Flash component
