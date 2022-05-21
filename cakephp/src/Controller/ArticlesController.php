@@ -17,12 +17,14 @@ class ArticlesController extends AppController
 
   public function index()
   {
+    $this->Authorization->skipAuthorization();
     $articles = $this->Paginator->paginate($this->Articles->find());
     $this->set(compact('articles'));
   }
 
   public function view($slug = null)
   {
+    $this->Authorization->skipAuthorization();
     /**
      * Dynamic Finder (findBySlug)
      * https://book.cakephp.org/4/en/orm/retrieving-data-and-resultsets.html#dynamic-finders
@@ -40,13 +42,15 @@ class ArticlesController extends AppController
   public function add()
   {
     $article = $this->Articles->newEmptyEntity();
+    $this->Authorization->authorize($article);
     if ($this->request->is('post'))
     {
       $article = $this->Articles->patchEntity($article, $this->request->getData());
 
       // Hardcoding the user_id is temporary, and will be removed later
       // when we build authentication out.
-      $article->user_id = 5;
+      // $article->user_id = 5;
+      $article->user_id = $this->request->getAttribute('identity')->getIdentifier();
 
       if ($this->Articles->save($article))
       {
@@ -70,10 +74,16 @@ class ArticlesController extends AppController
       ->findBySlug($slug)
       ->contain('Tags')
       ->firstOrFail();
+    $this->Authorization->authorize($article);
 
     if ($this->request->is(['post', 'put']))
     {
-      $this->Articles->patchEntity($article, $this->request->getData());
+      // change accessible fields
+      // https://book.cakephp.org/4/en/orm/saving-data.html#changing-accessible-fields
+      $this->Articles->patchEntity($article, $this->request->getData(), [
+        // Added: Disable modification of user_id.
+        'accessibleFields' => ['user_id' => false]
+      ]);
       if ($this->Articles->save($article))
       {
           $this->Flash->success(__('Your article has been updated.'));
@@ -93,6 +103,7 @@ class ArticlesController extends AppController
   {
     $this->request->allowMethod(['post', 'delete']);
     $article = $this->Articles->findBySlug($slug)->firstOrFail();
+    $this->Authorization->authorize($article);
     if ($this->Articles->delete($article))
     {
       $this->Flash->success(__('The {0} article has been deleted.', $article->title));
@@ -103,6 +114,7 @@ class ArticlesController extends AppController
   // Since passed arguments are passed as method parameters, you could also write the action using PHP’s variadic argument:
   public function tags(...$tags)
   {
+    $this->Authorization->skipAuthorization();
     // The 'pass' key is provided by CakePHP and contains all
     // the passed URL path segments in the request.
     // https://book.cakephp.org/4/en/controllers/request-response.html#cake-request
