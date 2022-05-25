@@ -18,9 +18,14 @@ class ArticlesController extends AppController
   public function index()
   {
     $this->Authorization->skipAuthorization();
-    $user_id = $this->request->getAttribute('identity')->getIdentifier();
-    $articles = $this->Paginator->paginate($this->Articles->find());
-    $this->set(compact('user_id', 'articles'));
+    if ($this->request->getAttribute('identity'))
+    {
+      $user_id = $this->request->getAttribute('identity')->getIdentifier();
+      $articles = $this->Paginator->paginate($this->Articles->find());
+      $this->set(compact('user_id', 'articles'));
+    } else {
+      return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+    }
   }
 
   public function view($slug = null)

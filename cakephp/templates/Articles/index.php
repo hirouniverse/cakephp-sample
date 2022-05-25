@@ -20,15 +20,15 @@
           <?= $article->created->format(DATE_RFC850) ?>
       </td>
       <td>
-        <?php
-            if ($user_id === $article->user_id) {
-                echo $this->Html->link('Edit', ['action' => 'edit', $article->slug]) . " | ";
-                echo $this->Form->postLink(
-                    'Delete',
-                    ['action' => 'delete', $article->slug],
-                    ['confirm' => 'Are you sure?']);
-            }
-        ?>
+        <?php if ($user_id === $article->user_id): ?>
+            <?= $this->Html->link('Edit', ['action' => 'edit', $article->slug]) ?>
+            |
+            <?= $this->Form->postLink(
+                'Delete',
+                ['action' => 'delete', $article->slug],
+                ['confirm' => 'Are you sure?'])
+            ?>
+        <?php endif; ?>
       </td>
   </tr>
   <?php endforeach; ?>
