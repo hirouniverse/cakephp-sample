@@ -123,4 +123,8 @@ return [
             'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
         ],
     ],
+    'Session' => [
+        'defaults' => 'php',
+        'timeout' => 60,
+    ],
 ];
