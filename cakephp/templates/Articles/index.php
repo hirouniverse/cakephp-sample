@@ -20,12 +20,15 @@
           <?= $article->created->format(DATE_RFC850) ?>
       </td>
       <td>
-          <?= $this->Html->link('Edit', ['action' => 'edit', $article->slug]) ?> |
-          <?= $this->Form->postLink(
-              'Delete',
-              ['action' => 'delete', $article->slug],
-              ['confirm' => 'Are you sure?'])
-          ?>
+        <?php
+            if ($user_id === $article->user_id) {
+                echo $this->Html->link('Edit', ['action' => 'edit', $article->slug]) . " | ";
+                echo $this->Form->postLink(
+                    'Delete',
+                    ['action' => 'delete', $article->slug],
+                    ['confirm' => 'Are you sure?']);
+            }
+        ?>
       </td>
   </tr>
   <?php endforeach; ?>
