@@ -64,8 +64,7 @@ class ArticlesController extends AppController
     $tags = $this->Articles->Tags->find('list')->all();
 
     // Set tags to the view context
-    $this->set('tags', $tags);
-    $this->set('article', $article);
+    $this->set(compact('tags', 'article'));
   }
 
   public function edit($slug = null)
@@ -96,8 +95,7 @@ class ArticlesController extends AppController
     $tags = $this->Articles->Tags->find('list')->all();
 
     // Set tags to the view context
-    $this->set('tags', $tags);
-    $this->set('article', $article);
+    $this->set(compact('tags', 'article'));
   }
 
   public function delete($slug = null)
