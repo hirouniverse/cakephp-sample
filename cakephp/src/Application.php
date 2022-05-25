@@ -75,7 +75,10 @@ class Application extends BaseApplication
          * Debug Kit should not be installed on a production system
          */
         if (Configure::read('debug')) {
-            $this->addPlugin('DebugKit');
+            $this->addPlugin('DebugKit', [
+                'ignoreAuthorization' => true,
+            ]);
+            Configure::write('DebugKit.ignoreAuthorization', true);
         }
 
         // Load more plugins here
